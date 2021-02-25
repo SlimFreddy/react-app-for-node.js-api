@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { Route } from "react-router-dom";
-import Navbar from "../components/navbar/Navbar";
+import NavBar from "../components/navbar/Navbar";
 import { IRoute } from "../models/IRoute";
 import LocalStorageService from "../services/LocalStorageService";
 import { ROUTES_NO_TOKEN, ROUTES_WITH_TOKEN } from "./Routes";
@@ -25,7 +25,7 @@ const RouterView: FC = () => {
 
   return (
     <div>
-      <Navbar routes={routes} />
+      <NavBar routes={routes} />
       {routes.map((route) => {
         return (
           <Route
