@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { IRoute } from "../../models/IRoute";
 
 interface Props {
@@ -8,11 +9,13 @@ interface Props {
 const Navbar: FC<Props> = ({ routes }) => {
   return (
     <div>
-      <Nav variant="tabs" defaultActiveKey="/home">
+      <Nav color="secondary" justify variant="pills" defaultActiveKey="/">
         {routes.map((route) => {
           return (
             <Nav.Item key={route.name}>
-              <Nav.Link href={route.path}>{route.name}</Nav.Link>
+              <Nav.Link as={Link} to={route.path} eventKey={route.path}>
+                {route.name}
+              </Nav.Link>
             </Nav.Item>
           );
         })}
