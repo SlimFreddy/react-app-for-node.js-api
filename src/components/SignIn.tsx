@@ -25,7 +25,7 @@ const SignIn: FC<Props> = ({ show, callback, saveSignInUser }) => {
   };
 
   useEffect(() => {
-    if (password.length === 0 || username.length <= 6) {
+    if (password.length === 0 || username.length === 0) {
       setDisabled(true);
     } else {
       setDisabled(false);
@@ -81,7 +81,7 @@ const SignIn: FC<Props> = ({ show, callback, saveSignInUser }) => {
           />
         </Form.Group>
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className="d-flex justify-content-between">
         <Form.Text className="text-muted">{error.message}</Form.Text>
         <Button
           variant="outline-success"
