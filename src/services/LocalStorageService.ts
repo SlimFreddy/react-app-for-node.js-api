@@ -1,3 +1,4 @@
+
 class LocalStorageService {
   storeAuthInfo(jwt: string): void {
     localStorage.setItem("jwt", jwt);
@@ -18,6 +19,7 @@ class LocalStorageService {
       localStorage.removeItem(info);
     });
   }
+
 }
 
 export default new LocalStorageService();
