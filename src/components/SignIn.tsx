@@ -6,8 +6,9 @@ import AuthService from "../services/AuthService";
 interface Props {
   show: boolean;
   callback: () => void;
+  saveSignInUser: (user: IActualUser | any) => void;
 }
-const SignIn: FC<Props> = ({ show, callback }) => {
+const SignIn: FC<Props> = ({ show, callback, saveSignInUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<IError>({ status: 0, message: "" });
@@ -24,7 +25,7 @@ const SignIn: FC<Props> = ({ show, callback }) => {
   };
 
   useEffect(() => {
-    if (password.length <= 6 || username.length <= 6) {
+    if (password.length === 0 || username.length <= 6) {
       setDisabled(true);
     } else {
       setDisabled(false);
@@ -38,7 +39,8 @@ const SignIn: FC<Props> = ({ show, callback }) => {
     };
     try {
       await AuthService.signIn(signInData);
-      window.location.reload();
+      saveSignInUser({ isSignIn: true, username: username });
+      callback();
     } catch (error) {
       setError(error);
     }
@@ -80,6 +82,7 @@ const SignIn: FC<Props> = ({ show, callback }) => {
         </Form.Group>
       </Modal.Body>
       <Modal.Footer>
+        <Form.Text className="text-muted">{error.message}</Form.Text>
         <Button
           variant="outline-success"
           disabled={isDisabled}
@@ -87,7 +90,6 @@ const SignIn: FC<Props> = ({ show, callback }) => {
         >
           Sign In
         </Button>
-        <Form.Text className="text-muted">{error.message}</Form.Text>
       </Modal.Footer>
     </Modal>
   );

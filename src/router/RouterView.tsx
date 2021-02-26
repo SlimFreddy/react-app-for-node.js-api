@@ -1,14 +1,28 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { Dispatch, FC, useEffect, useState } from "react";
 import { Route } from "react-router-dom";
 import NavBar from "./navbar/NavBar";
 import { IRoute } from "../models/IRoute";
 import LocalStorageService from "../services/LocalStorageService";
 import { ROUTES_NO_TOKEN, ROUTES_WITH_TOKEN } from "./Routes";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { signInUser, signOutUser } from "../store/actionCreators";
 
 const RouterView: FC = () => {
-  const initialState = () => LocalStorageService.isLogged();
+  const actualUser: IActualUser = useSelector(
+    (state: ActualUserState) => state.user,
+    shallowEqual
+  );
+  const dispatch: Dispatch<any> = useDispatch();
+  const saveSignInUser = React.useCallback(
+    (user: IActualUser) => dispatch(signInUser(user)),
+    [dispatch]
+  );
+  const saveSignOutUser = React.useCallback(
+    (user: IActualUser) => dispatch(signOutUser(user)),
+    [dispatch]
+  );
   const [routes, setRoutes] = useState<IRoute[]>(() => {
-    if (initialState()) {
+    if (actualUser.isSignIn) {
       return ROUTES_WITH_TOKEN;
     } else {
       return ROUTES_NO_TOKEN;
@@ -16,16 +30,20 @@ const RouterView: FC = () => {
   });
 
   useEffect(() => {
-    if (initialState()) {
+    if (actualUser.isSignIn) {
       setRoutes(ROUTES_WITH_TOKEN);
     } else {
       setRoutes(ROUTES_NO_TOKEN);
     }
-  }, [initialState()]);
+  }, [actualUser]);
 
   return (
     <div>
-      <NavBar routes={routes} />
+      <NavBar
+        routes={routes}
+        saveSignInUser={saveSignInUser}
+        saveSignOutUser={saveSignOutUser}
+      />
       {routes.map((route) => {
         return (
           <Route

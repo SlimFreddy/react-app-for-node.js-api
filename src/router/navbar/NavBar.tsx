@@ -7,8 +7,10 @@ import LocalStorageService from "../../services/LocalStorageService";
 
 interface Props {
   routes: IRoute[];
+  saveSignInUser: (user: IActualUser | any) => void;
+  saveSignOutUser: (user: IActualUser | any) => void;
 }
-const NavBar: FC<Props> = ({ routes }) => {
+const NavBar: FC<Props> = ({ routes, saveSignInUser, saveSignOutUser }) => {
   const history = useHistory();
   const initialState = () => LocalStorageService.isLogged();
   const [showSignIn, setShowSignIn] = useState(false);
@@ -22,8 +24,8 @@ const NavBar: FC<Props> = ({ routes }) => {
             className="mx-2"
             onClick={() => {
               LocalStorageService.removeAuthInfo();
+              saveSignOutUser({ isSignIn: false, username: "" });
               history.push("/");
-              window.location.reload();
             }}
           >
             Sign Out
@@ -43,6 +45,7 @@ const NavBar: FC<Props> = ({ routes }) => {
             Sign In
           </Button>
           <SignIn
+            saveSignInUser={saveSignInUser}
             show={showSignIn}
             callback={() => {
               setShowSignIn(false);
