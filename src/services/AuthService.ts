@@ -1,6 +1,6 @@
 import Axios from "../config/Axios";
-import { SIGN_IN } from "../config/Endpoints";
-import { ISignIn} from "../models/Auth";
+import { CHECK_USERNAME_VALID, SIGN_IN } from "../config/Endpoints";
+import { ISignIn, IUsernameValid } from "../models/Auth";
 import { IError } from "../models/IError";
 import LocalStorageService from "./LocalStorageService";
 
@@ -17,6 +17,11 @@ class AuthService {
         message: errorData.message,
       });
     }
+  }
+
+  public async checkUsernameValid(username: string): Promise<IUsernameValid> {
+    const response = await Axios.get(CHECK_USERNAME_VALID + username);
+    return response.data;
   }
 }
 

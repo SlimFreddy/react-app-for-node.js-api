@@ -1,17 +1,21 @@
 import React, { FC, useEffect, useState } from "react";
 import { Button, Card, Form, Modal } from "react-bootstrap";
-import { ISignIn } from "../models/Auth";
+import { ISignIn, IUsernameValid } from "../models/Auth";
 import { IError } from "../models/IError";
 import AuthService from "../services/AuthService";
 interface Props {
   show: boolean;
   callback: () => void;
-  saveSignInUser: (user: IActualUser | any) => void;
 }
-const SignIn: FC<Props> = ({ show, callback, saveSignInUser }) => {
+const SignUp: FC<Props> = ({ show, callback }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<IError>({ status: 0, message: "" });
+  const [usernameValid, setUsernameValid] = useState<IUsernameValid>({
+    isValid: false,
+    message: "",
+  });
+
   const [isDisabled, setDisabled] = useState(() => {
     if (password.length <= 6 || username.length <= 6) {
       return true;
@@ -25,36 +29,19 @@ const SignIn: FC<Props> = ({ show, callback, saveSignInUser }) => {
   };
 
   useEffect(() => {
-    if (password.length === 0 || username.length === 0) {
+    if (password.length < 6 || username.length < 6) {
       setDisabled(true);
     } else {
       setDisabled(false);
     }
   }, [username, password]);
 
-  const handleSignIn = async () => {
-    const signInData: ISignIn = {
-      username: username,
-      password: password,
-    };
-    try {
-      await AuthService.signIn(signInData);
-      saveSignInUser({ isSignIn: true, username: username });
-      callback();
-    } catch (error) {
-      setError(error);
-    }
-  };
+  const handleSignUp = async () => {};
 
   return (
-    <Modal
-      centered
-      show={show}
-      onHide={handleClose}
-      animation={true}
-    >
+    <Modal centered show={show} onHide={handleClose} animation={true}>
       <Modal.Header closeButton>
-        <Modal.Title>Sign In</Modal.Title>
+        <Modal.Title>Sign Up</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form.Group controlId="formBasicUsername">
@@ -62,14 +49,28 @@ const SignIn: FC<Props> = ({ show, callback, saveSignInUser }) => {
           <Form.Control
             type="username"
             placeholder="Enter username"
-            onChange={(e) => {
+            onChange={async (e) => {
               setUsername(e.target.value);
+              setUsernameValid(
+                await AuthService.checkUsernameValid(e.target.value)
+              );
             }}
           />
+          <Form.Text className="text-muted">{usernameValid.message}</Form.Text>
         </Form.Group>
 
         <Form.Group controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Enter password"
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
+        </Form.Group>
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>Confirm password</Form.Label>
           <Form.Control
             type="password"
             placeholder="Enter password"
@@ -84,13 +85,13 @@ const SignIn: FC<Props> = ({ show, callback, saveSignInUser }) => {
         <Button
           variant="outline-success"
           disabled={isDisabled}
-          onClick={handleSignIn}
+          onClick={handleSignUp}
         >
-          Sign In
+          Sign Up
         </Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default SignIn;
+export default SignUp;

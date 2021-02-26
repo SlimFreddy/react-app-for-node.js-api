@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import { Navbar, Nav, Button, Form, Modal, Container } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import SignIn from "../../components/SignIn";
+import SignUp from "../../components/SignUp";
 import { IRoute } from "../../models/IRoute";
 import LocalStorageService from "../../services/LocalStorageService";
 
@@ -14,6 +15,7 @@ const NavBar: FC<Props> = ({ routes, saveSignInUser, saveSignOutUser }) => {
   const history = useHistory();
   const initialState = () => LocalStorageService.isLogged();
   const [showSignIn, setShowSignIn] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
 
   const buttonRenderer = () => {
     if (initialState()) {
@@ -51,9 +53,21 @@ const NavBar: FC<Props> = ({ routes, saveSignInUser, saveSignOutUser }) => {
               setShowSignIn(false);
             }}
           ></SignIn>
-          <Button variant="success" className="mx-2">
+          <Button
+            variant="success"
+            className="mx-2"
+            onClick={() => {
+              setShowSignUp(true);
+            }}
+          >
             Sign Up
           </Button>
+          <SignUp
+            show={showSignUp}
+            callback={() => {
+              setShowSignUp(false);
+            }}
+          ></SignUp>
         </Form>
       );
     }

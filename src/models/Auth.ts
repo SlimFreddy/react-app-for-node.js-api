@@ -3,6 +3,11 @@ export interface ISignIn {
   password: string;
 }
 
-export interface IToken{
+export interface IToken {
   jwt: string;
+}
+
+export interface IUsernameValid {
+  isValid: boolean;
+  message: string;
 }
