@@ -1,6 +1,6 @@
 import Axios from "../config/Axios";
-import { CHECK_USERNAME_VALID, SIGN_IN } from "../config/Endpoints";
-import { ISignIn, IUsernameValid } from "../models/Auth";
+import { CHECK_USERNAME_VALID, SIGN_IN, SIGN_UP } from "../config/Endpoints";
+import { ISignIn, ISignUp, IUsernameValid } from "../models/Auth";
 import { IError } from "../models/IError";
 import LocalStorageService from "./LocalStorageService";
 
@@ -10,7 +10,18 @@ class AuthService {
       const response = await Axios.post(SIGN_IN, signIn);
       LocalStorageService.storeAuthInfo(response.data.jwt);
     } catch (error) {
-      console.log(error.response);
+      const errorData = error.response.data;
+      return Promise.reject({
+        status: errorData.status,
+        message: errorData.message,
+      });
+    }
+  }
+
+  public async signUp(signUp: ISignUp): Promise<void | IError> {
+    try {
+      const response = await Axios.post(SIGN_UP, signUp);
+    } catch (error) {
       const errorData = error.response.data;
       return Promise.reject({
         status: errorData.status,

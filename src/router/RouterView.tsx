@@ -43,6 +43,7 @@ const RouterView: FC = () => {
         routes={routes}
         saveSignInUser={saveSignInUser}
         saveSignOutUser={saveSignOutUser}
+        actualUser={actualUser}
       />
       {routes.map((route) => {
         return (

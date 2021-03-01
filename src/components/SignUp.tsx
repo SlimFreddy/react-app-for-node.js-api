@@ -10,6 +10,7 @@ interface Props {
 const SignUp: FC<Props> = ({ show, callback }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<IError>({ status: 0, message: "" });
   const [usernameValid, setUsernameValid] = useState<IUsernameValid>({
     isValid: false,
@@ -29,14 +30,32 @@ const SignUp: FC<Props> = ({ show, callback }) => {
   };
 
   useEffect(() => {
-    if (password.length < 6 || username.length < 6) {
+    if (
+      password.length < 6 ||
+      confirmPassword.length < 6 ||
+      password !== confirmPassword ||
+      username.length < 6
+    ) {
+      if (password !== confirmPassword) {
+        setError({ status: 0, message: "Passwords do not match" });
+      }
       setDisabled(true);
     } else {
       setDisabled(false);
+      if (password === confirmPassword) {
+        setError({ status: 0, message: "" });
+      }
     }
   }, [username, password]);
 
-  const handleSignUp = async () => {};
+  const handleSignUp = async () => {
+    try {
+      await AuthService.signUp({ username: username, password: password });
+      callback();
+    } catch (error) {
+      setError(error);
+    }
+  };
 
   return (
     <Modal centered show={show} onHide={handleClose} animation={true}>
@@ -75,7 +94,7 @@ const SignUp: FC<Props> = ({ show, callback }) => {
             type="password"
             placeholder="Enter password"
             onChange={(e) => {
-              setPassword(e.target.value);
+              setConfirmPassword(e.target.value);
             }}
           />
         </Form.Group>

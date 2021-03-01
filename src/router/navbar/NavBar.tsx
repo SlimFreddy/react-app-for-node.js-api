@@ -8,17 +8,23 @@ import LocalStorageService from "../../services/LocalStorageService";
 
 interface Props {
   routes: IRoute[];
+  actualUser: IActualUser;
   saveSignInUser: (user: IActualUser | any) => void;
   saveSignOutUser: (user: IActualUser | any) => void;
 }
-const NavBar: FC<Props> = ({ routes, saveSignInUser, saveSignOutUser }) => {
+const NavBar: FC<Props> = ({
+  routes,
+  saveSignInUser,
+  saveSignOutUser,
+  actualUser,
+}) => {
   const history = useHistory();
-  const initialState = () => LocalStorageService.isLogged();
+
   const [showSignIn, setShowSignIn] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
 
   const buttonRenderer = () => {
-    if (initialState()) {
+    if (actualUser.isSignIn) {
       return (
         <Form inline>
           <Button

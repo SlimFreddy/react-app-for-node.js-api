@@ -3,6 +3,11 @@ export interface ISignIn {
   password: string;
 }
 
+export interface ISignUp {
+  username: string;
+  password: string;
+}
+
 export interface IToken {
   jwt: string;
 }
