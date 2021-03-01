@@ -12,7 +12,7 @@ export function signInUser(user: IActualUser) {
 export function signOutUser(user: IActualUser) {
   const action: ActualUserAction = {
     type: actionTypes.SIGN_OUT_USER,
-    user: { isSignIn: false, username: "" },
+    user: { isSignIn: false, username: "", userId: "" },
   };
 
   return action;

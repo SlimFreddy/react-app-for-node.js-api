@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { Button, Card, Form, Modal } from "react-bootstrap";
+import { Button,  Form, Modal } from "react-bootstrap";
 import { ISignIn } from "../models/Auth";
 import { IError } from "../models/IError";
 import AuthService from "../services/AuthService";
@@ -38,8 +38,9 @@ const SignIn: FC<Props> = ({ show, callback, saveSignInUser }) => {
       password: password,
     };
     try {
-      await AuthService.signIn(signInData);
-      saveSignInUser({ isSignIn: true, username: username });
+      const userId = await AuthService.signIn(signInData);
+      console.log(userId);
+      saveSignInUser({ isSignIn: true, username: username, userId: userId });
       callback();
     } catch (error) {
       setError(error);
@@ -47,12 +48,7 @@ const SignIn: FC<Props> = ({ show, callback, saveSignInUser }) => {
   };
 
   return (
-    <Modal
-      centered
-      show={show}
-      onHide={handleClose}
-      animation={true}
-    >
+    <Modal centered show={show} onHide={handleClose} animation={true}>
       <Modal.Header closeButton>
         <Modal.Title>Sign In</Modal.Title>
       </Modal.Header>

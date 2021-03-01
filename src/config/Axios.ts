@@ -12,7 +12,7 @@ Axios.defaults.headers = {
 Axios.interceptors.request.use((config) => {
   const authToken = LocalStorageService.getAuthToken();
   if (authToken) {
-    config.headers.Identity = authToken;
+    config.headers.jwt = authToken;
   }
   return config;
 });

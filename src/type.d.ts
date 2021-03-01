@@ -1,6 +1,7 @@
 interface IActualUser {
   isSignIn: boolean;
   username: string;
+  userId: string;
 }
 
 type ActualUserState = {

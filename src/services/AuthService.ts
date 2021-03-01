@@ -5,10 +5,11 @@ import { IError } from "../models/IError";
 import LocalStorageService from "./LocalStorageService";
 
 class AuthService {
-  public async signIn(signIn: ISignIn): Promise<void | IError> {
+  public async signIn(signIn: ISignIn): Promise<string | IError> {
     try {
       const response = await Axios.post(SIGN_IN, signIn);
-      LocalStorageService.storeAuthInfo(response.data.jwt);
+      LocalStorageService.storeAuthInfo(response.data.jwt, response.data.userId, signIn.username);
+      return response.data.userId;
     } catch (error) {
       const errorData = error.response.data;
       return Promise.reject({
