@@ -8,9 +8,15 @@ class AuthService {
   public async signIn(signIn: ISignIn): Promise<string | IError> {
     try {
       const response = await Axios.post(SIGN_IN, signIn);
-      LocalStorageService.storeAuthInfo(response.data.jwt, response.data.userId, signIn.username);
-      return response.data.userId;
+      console.log(response);
+      LocalStorageService.storeAuthInfo(
+        response.data.jwt,
+        response.data.userId,
+        signIn.username
+      );
+      return response.data.userId as string;
     } catch (error) {
+      console.log(error)
       const errorData = error.response.data;
       return Promise.reject({
         status: errorData.status,
@@ -21,7 +27,7 @@ class AuthService {
 
   public async signUp(signUp: ISignUp): Promise<void | IError> {
     try {
-      const response = await Axios.post(SIGN_UP, signUp);
+      await Axios.post(SIGN_UP, signUp);
     } catch (error) {
       const errorData = error.response.data;
       return Promise.reject({

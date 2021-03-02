@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
-import { Button, Card, Form, Modal } from "react-bootstrap";
-import { ISignIn, IUsernameValid } from "../models/Auth";
+import { Button, Form, Modal } from "react-bootstrap";
+import {  IUsernameValid } from "../models/Auth";
 import { IError } from "../models/IError";
 import AuthService from "../services/AuthService";
 interface Props {
@@ -46,7 +46,7 @@ const SignUp: FC<Props> = ({ show, callback }) => {
         setError({ status: 0, message: "" });
       }
     }
-  }, [username, password]);
+  }, [username, password, confirmPassword]);
 
   const handleSignUp = async () => {
     try {

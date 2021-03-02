@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import SignIn from "../components/SignIn"
+
 const Home: FC = () => {
   return (
     <div>

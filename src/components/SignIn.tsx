@@ -39,7 +39,6 @@ const SignIn: FC<Props> = ({ show, callback, saveSignInUser }) => {
     };
     try {
       const userId = await AuthService.signIn(signInData);
-      console.log(userId);
       saveSignInUser({ isSignIn: true, username: username, userId: userId });
       callback();
     } catch (error) {

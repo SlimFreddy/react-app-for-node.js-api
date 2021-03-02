@@ -1,11 +1,12 @@
 import React, { FC, useState } from "react";
-import { Navbar, Nav, Button, Form, Modal, Container } from "react-bootstrap";
+import { Navbar, Nav, Button, Form } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import SignIn from "../../components/SignIn";
 import SignUp from "../../components/SignUp";
+import { USER_IMAGE } from "../../config/Endpoints";
 import { IRoute } from "../../models/IRoute";
 import LocalStorageService from "../../services/LocalStorageService";
-
+import style from "./NavBar.module.scss";
 interface Props {
   routes: IRoute[];
   actualUser: IActualUser;
@@ -19,9 +20,15 @@ const NavBar: FC<Props> = ({
   actualUser,
 }) => {
   const history = useHistory();
-
   const [showSignIn, setShowSignIn] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
+
+  const getUserImageRenderer = () => {
+    if (actualUser.userId !== "") {
+      return <img src={`${USER_IMAGE + actualUser.userId}`} alt=""></img>;
+    }
+    return null;
+  };
 
   const buttonRenderer = () => {
     if (actualUser.isSignIn) {
@@ -38,6 +45,9 @@ const NavBar: FC<Props> = ({
           >
             Sign Out
           </Button>
+          <div className={style.userImage}>
+          {getUserImageRenderer()}
+          </div>
         </Form>
       );
     } else {

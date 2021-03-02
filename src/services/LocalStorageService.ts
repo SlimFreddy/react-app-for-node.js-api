@@ -2,7 +2,7 @@ class LocalStorageService {
   storeAuthInfo(jwt: string, userId: string, username: string): void {
     localStorage.setItem("jwt", jwt);
     localStorage.setItem("userId", userId);
-    localStorage.username("username", username);
+    localStorage.setItem("username", username);
   }
 
   getAuthToken(): string | null {

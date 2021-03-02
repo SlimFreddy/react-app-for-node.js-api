@@ -2,7 +2,6 @@ import React, { Dispatch, FC, useEffect, useState } from "react";
 import { Route } from "react-router-dom";
 import NavBar from "./navbar/NavBar";
 import { IRoute } from "../models/IRoute";
-import LocalStorageService from "../services/LocalStorageService";
 import { ROUTES_NO_TOKEN, ROUTES_WITH_TOKEN } from "./Routes";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { signInUser, signOutUser } from "../store/actionCreators";
