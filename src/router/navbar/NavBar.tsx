@@ -1,11 +1,10 @@
 import React, { FC, useState } from "react";
-import { Navbar, Nav, Button, Form } from "react-bootstrap";
+import { Navbar, Nav, Button, Form, Image, Dropdown } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import SignIn from "../../components/SignIn";
 import SignUp from "../../components/SignUp";
 import { USER_IMAGE } from "../../config/Endpoints";
 import { IRoute } from "../../models/IRoute";
-import LocalStorageService from "../../services/LocalStorageService";
 import style from "./NavBar.module.scss";
 interface Props {
   routes: IRoute[];
@@ -23,31 +22,34 @@ const NavBar: FC<Props> = ({
   const [showSignIn, setShowSignIn] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
 
-  const getUserImageRenderer = () => {
-    if (actualUser.userId !== "") {
-      return <img src={`${USER_IMAGE + actualUser.userId}`} alt=""></img>;
-    }
-    return null;
-  };
-
   const buttonRenderer = () => {
     if (actualUser.isSignIn) {
       return (
         <Form inline>
-          <Button
-            variant="success"
-            className="mx-2"
-            onClick={() => {
-              LocalStorageService.removeAuthInfo();
-              saveSignOutUser({ isSignIn: false, username: "" });
-              history.push("/");
-            }}
-          >
-            Sign Out
-          </Button>
-          <div className={style.userImage}>
-          {getUserImageRenderer()}
-          </div>
+          <Dropdown className={style.button} drop="left">
+            <Dropdown.Toggle id="dropdown-basic">
+              <Image
+                className={style.userImage}
+                src={`${USER_IMAGE + actualUser.userId}`}
+                alt=""
+              ></Image>
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item href="#/action-1">User Settings</Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  history.push("/");
+                  saveSignOutUser({
+                    isSignIn: false,
+                    username: "",
+                    userId: "",
+                  });
+                }}
+              >
+                Sign Out
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Form>
       );
     } else {
@@ -92,7 +94,7 @@ const NavBar: FC<Props> = ({
     <div>
       <Navbar
         sticky="top"
-        className="d-flex justify-content-between"
+        className={style.navBar + " d-flex justify-content-between"}
         bg="dark"
         variant="dark"
       >
