@@ -8,7 +8,6 @@ class AuthService {
   public async signIn(signIn: ISignIn): Promise<string | IError> {
     try {
       const response = await Axios.post(SIGN_IN, signIn);
-      console.log(response);
       LocalStorageService.storeAuthInfo(
         response.data.jwt,
         response.data.userId,
@@ -16,7 +15,6 @@ class AuthService {
       );
       return response.data.userId as string;
     } catch (error) {
-      console.log(error);
       const errorData = error.response.data;
       return Promise.reject({
         status: errorData.status,

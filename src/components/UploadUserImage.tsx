@@ -1,20 +1,13 @@
 import React, { FC, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
-import Axios from "../config/Axios";
-import { USER_IMAGE } from "../config/Endpoints";
+import UserService from "../services/UserService";
 
 const UploadUserImage: FC = () => {
-  const [userImage, setUserImage] = useState("");
+  const [userImage, setUserImage] = useState<File>();
 
   const handleUpload = async () => {
     if (userImage) {
-      let formData = new FormData();
-      formData.append("user-image", userImage);
-      await Axios.post(USER_IMAGE, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      UserService.uploadUserImage(userImage);
     }
   };
   return (
@@ -31,7 +24,9 @@ const UploadUserImage: FC = () => {
                 label="Select your new User-Image"
                 accept="image/png, image/jpeg"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setUserImage(e.target.value);
+                  if (e.target.files) {
+                    setUserImage(e.target.files[0]);
+                  }
                 }}
               />
             </Form.Group>
