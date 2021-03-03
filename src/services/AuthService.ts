@@ -16,7 +16,7 @@ class AuthService {
       );
       return response.data.userId as string;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       const errorData = error.response.data;
       return Promise.reject({
         status: errorData.status,
@@ -38,7 +38,7 @@ class AuthService {
   }
 
   public async checkUsernameValid(username: string): Promise<IUsernameValid> {
-    const response = await Axios.get(CHECK_USERNAME_VALID + username);
+    const response = await Axios.get(CHECK_USERNAME_VALID + "/" + username);
     return response.data;
   }
 }

@@ -5,6 +5,7 @@ import SignIn from "../../components/SignIn";
 import SignUp from "../../components/SignUp";
 import { USER_IMAGE } from "../../config/Endpoints";
 import { IRoute } from "../../models/IRoute";
+import LocalStorageService from "../../services/LocalStorageService";
 import style from "./NavBar.module.scss";
 interface Props {
   routes: IRoute[];
@@ -30,12 +31,14 @@ const NavBar: FC<Props> = ({
             <Dropdown.Toggle id="dropdown-basic">
               <Image
                 className={style.userImage}
-                src={`${USER_IMAGE + actualUser.userId}`}
+                src={`${USER_IMAGE + "/" + actualUser.userId}`}
                 alt=""
               ></Image>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">User Settings</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/user-settings">
+                User Settings
+              </Dropdown.Item>
               <Dropdown.Item
                 onClick={() => {
                   history.push("/");
@@ -44,6 +47,7 @@ const NavBar: FC<Props> = ({
                     username: "",
                     userId: "",
                   });
+                  LocalStorageService.removeAuthInfo();
                 }}
               >
                 Sign Out
@@ -101,6 +105,9 @@ const NavBar: FC<Props> = ({
         <Navbar.Brand>API</Navbar.Brand>
         <Nav>
           {routes.map((route) => {
+            if (route.name === "User Settings") {
+              return null;
+            }
             return (
               <Nav.Item key={route.name}>
                 <Nav.Link as={Link} to={route.path} eventKey={route.path}>
