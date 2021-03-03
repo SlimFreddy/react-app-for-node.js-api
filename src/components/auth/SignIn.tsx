@@ -1,22 +1,17 @@
 import React, { FC, useEffect, useState } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
-import {  IUsernameValid } from "../models/Auth";
-import { IError } from "../models/IError";
-import AuthService from "../services/AuthService";
+import { Button,  Form, Modal } from "react-bootstrap";
+import { ISignIn } from "../../models/Auth";
+import { IError } from "../../models/IError";
+import AuthService from "../../services/AuthService";
 interface Props {
   show: boolean;
   callback: () => void;
+  saveSignInUser: (user: IActualUser | any) => void;
 }
-const SignUp: FC<Props> = ({ show, callback }) => {
+const SignIn: FC<Props> = ({ show, callback, saveSignInUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<IError>({ status: 0, message: "" });
-  const [usernameValid, setUsernameValid] = useState<IUsernameValid>({
-    isValid: false,
-    message: "",
-  });
-
   const [isDisabled, setDisabled] = useState(() => {
     if (password.length <= 6 || username.length <= 6) {
       return true;
@@ -30,27 +25,21 @@ const SignUp: FC<Props> = ({ show, callback }) => {
   };
 
   useEffect(() => {
-    if (
-      password.length < 6 ||
-      confirmPassword.length < 6 ||
-      password !== confirmPassword ||
-      username.length < 6
-    ) {
-      if (password !== confirmPassword) {
-        setError({ status: 0, message: "Passwords do not match" });
-      }
+    if (password.length === 0 || username.length === 0) {
       setDisabled(true);
     } else {
       setDisabled(false);
-      if (password === confirmPassword) {
-        setError({ status: 0, message: "" });
-      }
     }
-  }, [username, password, confirmPassword]);
+  }, [username, password]);
 
-  const handleSignUp = async () => {
+  const handleSignIn = async () => {
+    const signInData: ISignIn = {
+      username: username,
+      password: password,
+    };
     try {
-      await AuthService.signUp({ username: username, password: password });
+      const userId = await AuthService.signIn(signInData);
+      saveSignInUser({ isSignIn: true, username: username, userId: userId });
       callback();
     } catch (error) {
       setError(error);
@@ -60,7 +49,7 @@ const SignUp: FC<Props> = ({ show, callback }) => {
   return (
     <Modal centered show={show} onHide={handleClose} animation={true}>
       <Modal.Header closeButton>
-        <Modal.Title>Sign Up</Modal.Title>
+        <Modal.Title>Sign In</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form.Group controlId="formBasicUsername">
@@ -68,14 +57,10 @@ const SignUp: FC<Props> = ({ show, callback }) => {
           <Form.Control
             type="username"
             placeholder="Enter username"
-            onChange={async (e) => {
+            onChange={(e) => {
               setUsername(e.target.value);
-              setUsernameValid(
-                await AuthService.checkUsernameValid(e.target.value)
-              );
             }}
           />
-          <Form.Text className="text-muted">{usernameValid.message}</Form.Text>
         </Form.Group>
 
         <Form.Group controlId="formBasicPassword">
@@ -88,29 +73,19 @@ const SignUp: FC<Props> = ({ show, callback }) => {
             }}
           />
         </Form.Group>
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Confirm password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter password"
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
-            }}
-          />
-        </Form.Group>
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
         <Form.Text className="text-muted">{error.message}</Form.Text>
         <Button
           variant="outline-success"
           disabled={isDisabled}
-          onClick={handleSignUp}
+          onClick={handleSignIn}
         >
-          Sign Up
+          Sign In
         </Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default SignUp;
+export default SignIn;

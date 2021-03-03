@@ -17,7 +17,11 @@ class UserService {
     try {
       await Axios.delete(USER_IMAGE);
     } catch (error) {
-      console.log(error);
+      const errorData = error.response.data;
+      return Promise.reject({
+        status: errorData.status,
+        message: errorData.message,
+      });
     }
   }
 }

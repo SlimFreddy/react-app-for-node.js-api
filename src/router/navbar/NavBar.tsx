@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react";
 import { Navbar, Nav, Button, Form, Image, Dropdown } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
-import SignIn from "../../components/SignIn";
-import SignUp from "../../components/SignUp";
+import SignIn from "../../components/auth/SignIn";
+import SignUp from "../../components/auth/SignUp";
 import { USER_IMAGE } from "../../config/Endpoints";
 import { IRoute } from "../../models/IRoute";
 import LocalStorageService from "../../services/LocalStorageService";
