@@ -2,19 +2,27 @@ import React, { FC, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import UserService from "../services/UserService";
 
-const UploadUserImage: FC = () => {
+const UserImageSettings: FC = () => {
   const [userImage, setUserImage] = useState<File>();
+  const [error, setError] = useState("");
 
   const handleUpload = async () => {
     if (userImage) {
       UserService.uploadUserImage(userImage);
     }
   };
+  const handleRemove = async () => {
+    try {
+      UserService.removeUserImage();
+    } catch (error) {
+      setError(error.message);
+    }
+  };
   return (
     <div className="w-50">
       <Card>
         <Card.Header>
-          <h5>Upload User-Image</h5>
+          <h5>User-Image settings</h5>
         </Card.Header>
         <Card.Body>
           <Form>
@@ -36,10 +44,13 @@ const UploadUserImage: FC = () => {
           <Button variant="success" onClick={handleUpload}>
             Upload
           </Button>
+          <Button variant="danger" onClick={handleRemove}>
+            Remove User Image
+          </Button>
         </Card.Footer>
       </Card>
     </div>
   );
 };
 
-export default UploadUserImage;
+export default UserImageSettings;
