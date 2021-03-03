@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { Button, Card, Form, Image } from "react-bootstrap";
 import { shallowEqual, useSelector } from "react-redux";
-import { USER_IMAGE } from "../../config/Endpoints";
+import { GET_USER_IMAGE} from "../../config/Endpoints";
 import { IError } from "../../models/IError";
 import UserService from "../../services/UserService";
 import style from "./UserImageSettings.module.scss";
@@ -12,9 +12,8 @@ const UserImageSettings: FC = () => {
     shallowEqual
   );
   const [userImage, setUserImage] = useState<File>();
-  const [userImageLink, setUserImageLink] = useState(
-    USER_IMAGE + "/" + actualUser.userId
-  );
+  const userImageLink = GET_USER_IMAGE + "/" + actualUser.userId
+
   const [error, setError] = useState<IError>({ status: 0, message: "" });
 
   const handleUpload = async () => {

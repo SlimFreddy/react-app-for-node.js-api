@@ -3,7 +3,7 @@ import { Navbar, Nav, Button, Form, Image, Dropdown } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import SignIn from "../../components/auth/SignIn";
 import SignUp from "../../components/auth/SignUp";
-import { USER_IMAGE } from "../../config/Endpoints";
+import { GET_USER_IMAGE} from "../../config/Endpoints";
 import { IRoute } from "../../models/IRoute";
 import LocalStorageService from "../../services/LocalStorageService";
 import style from "./NavBar.module.scss";
@@ -31,7 +31,7 @@ const NavBar: FC<Props> = ({
             <Dropdown.Toggle id="dropdown-basic">
               <Image
                 className={style.userImage}
-                src={`${USER_IMAGE + "/" + actualUser.userId}`}
+                src={`${GET_USER_IMAGE + "/" + actualUser.userId}`}
                 alt=""
               ></Image>
             </Dropdown.Toggle>

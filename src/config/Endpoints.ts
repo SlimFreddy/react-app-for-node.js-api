@@ -1,6 +1,7 @@
-export const BASE_URL = "http://localhost:3000/api";
-export const SIGN_IN = BASE_URL + "/auth/sign-in";
-export const SIGN_UP = BASE_URL + "/auth/sign-up";
-export const CHECK_USERNAME_VALID = BASE_URL+ "/auth/username"
-export const USER_IMAGE = BASE_URL+"/users/user/user-image"
-
+export const GET_USER_IMAGE = "http://localhost:3000/api/users/user/user-image";
+export const BASE_URL = "http://localhost:3000/api/";
+export const SIGN_IN = "/auth/sign-in";
+export const SIGN_UP = "/auth/sign-up";
+export const CHECK_USERNAME_VALID = "/auth/username";
+export const USER_IMAGE = "/users/user/user-image";
+export const POSTS = "/posts";
