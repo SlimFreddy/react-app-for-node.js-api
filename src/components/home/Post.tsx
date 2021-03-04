@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Card, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Card, OverlayTrigger, Tooltip, Image } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { GET_USER_IMAGE } from "../../config/Endpoints";
 import IPost from "../../models/Home";
@@ -27,19 +27,24 @@ const Post: FC<Props> = ({ post }) => {
               </Tooltip>
             }
           >
-            <img
+            <Image
               onClick={() => {
-                history.push(
-                  "/user/" + (post.author ? post.author._id : "Unknown")
-                );
+                if (
+                  post.author._id !== "Unknown" &&
+                  !history.location.pathname.includes(
+                    "/user/" + post.author._id
+                  )
+                ) {
+                  history.push("/user/" + post.author._id);
+                }
               }}
               className={style.userImage + " align-self-center"}
               src={
-                GET_USER_IMAGE +
-                "/" +
-                (post.author ? post.author._id : "Unknown")
+                post.author._id !== "Unknown"
+                  ? GET_USER_IMAGE + "/" + post.author._id
+                  : "./images/Unknown.png"
               }
-            ></img>
+            ></Image>
           </OverlayTrigger>
         </Card.Header>
         <Card.Body>{post.postBody}</Card.Body>

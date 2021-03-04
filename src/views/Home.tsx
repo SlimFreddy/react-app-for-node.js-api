@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
+
 import Post from "../components/home/Post";
 import IPost from "../models/Home";
 import { IError } from "../models/IError";
@@ -14,8 +15,13 @@ const Home: FC = () => {
 
   const fetchPost = async () => {
     try {
-      const result = await PostService.getAllPost();
-      setPosts(result as IPost[]);
+      const result = (await PostService.getAllPost()) as IPost[];
+      result.sort((a, b) => {
+        const dateA = new Date(a.date).getTime();
+        const dateB = new Date(b.date).getTime();
+        return dateB - dateA;
+      });
+      setPosts(result);
     } catch (error) {
       setError(error);
     }
@@ -26,7 +32,7 @@ const Home: FC = () => {
       <h1>Home</h1>
       {posts.map((post) => {
         return (
-          <div className="w-50">
+          <div key={post._id} className="w-50">
             <Post post={post}></Post>
           </div>
         );

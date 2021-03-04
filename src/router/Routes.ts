@@ -1,4 +1,4 @@
-import { matchPath, useHistory } from "react-router-dom";
+
 import { IRoute } from "../models/IRoute";
 import About from "../views/About";
 import Home from "../views/Home";

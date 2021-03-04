@@ -58,7 +58,7 @@ const ShowUser: FC<Props> = ({ match }: Props) => {
         <Card.Body>
           <h2>Posts:</h2>
           {posts.map((post) => {
-            return <Post post={post}></Post>;
+            return <Post key={post._id} post={post}></Post>;
           })}
         </Card.Body>
       </Card>
