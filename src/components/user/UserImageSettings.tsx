@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { Button, Card, Form, Image } from "react-bootstrap";
 import { shallowEqual, useSelector } from "react-redux";
-import { GET_USER_IMAGE} from "../../config/Endpoints";
+import { GET_USER_IMAGE } from "../../config/Endpoints";
 import { IError } from "../../models/IError";
 import UserService from "../../services/UserService";
 import style from "./UserImageSettings.module.scss";
@@ -12,7 +12,7 @@ const UserImageSettings: FC = () => {
     shallowEqual
   );
   const [userImage, setUserImage] = useState<File>();
-  const userImageLink = GET_USER_IMAGE + "/" + actualUser.userId
+  const userImageLink = GET_USER_IMAGE + "/" + actualUser.userId;
 
   const [error, setError] = useState<IError>({ status: 0, message: "" });
 
@@ -41,6 +41,7 @@ const UserImageSettings: FC = () => {
           <Form>
             <Form.Group className="d-flex justify-content-start">
               <Image
+                id="user-image"
                 className={style.userImage}
                 src={`${userImageLink}`}
                 alt=""
@@ -53,6 +54,21 @@ const UserImageSettings: FC = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   if (e.target.files) {
                     setUserImage(e.target.files[0]);
+                    if (e.target.files.length !== 0) {
+                      let reader = new FileReader();
+                      reader.onload = () => {
+                        let el: HTMLImageElement = document.getElementById(
+                          "user-image"
+                        ) as HTMLImageElement;
+                        el.src = reader.result as string;
+                      };
+                      reader.readAsDataURL(e.target.files[0]);
+                    } else {
+                      let el: HTMLImageElement = document.getElementById(
+                        "user-image"
+                      ) as HTMLImageElement;
+                      el.src = userImageLink;
+                    }
                   }
                 }}
               />
