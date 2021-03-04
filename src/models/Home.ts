@@ -3,7 +3,7 @@ export default interface IPost {
   postTitle: string;
   postBody: string;
   date: Date;
-  author: {
+  author?: {
     _id: string;
     username: string;
   };

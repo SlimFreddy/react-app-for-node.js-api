@@ -1,6 +1,7 @@
 import Axios from "../config/Axios";
-import { USER_IMAGE } from "../config/Endpoints";
+import { USER, USER_IMAGE } from "../config/Endpoints";
 import { IError } from "../models/IError";
+import { IUser } from "../models/User";
 
 class UserService {
   public async uploadUserImage(userImage: File): Promise<void> {
@@ -25,5 +26,17 @@ class UserService {
     }
   }
 
+  public async getUserById(userId: string): Promise<IUser| IError> {
+    try {
+      const user = await Axios.get(USER + "/" + userId);
+      return user.data;
+    } catch (error) {
+      const errorData = error.response.data;
+      return Promise.reject({
+        status: errorData.status,
+        message: errorData.message,
+      });
+    }
+  }
 }
 export default new UserService();

@@ -4,5 +4,6 @@ export interface IRoute {
   name: string;
   path: string;
   exact: boolean;
-  view: FunctionComponent<{}>;
+  view: any;
+  showInNav: boolean;
 }

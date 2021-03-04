@@ -25,7 +25,11 @@ const Home: FC = () => {
     <div className="d-flex flex-column justify-content-center align-items-center">
       <h1>Home</h1>
       {posts.map((post) => {
-        return <Post post={post}></Post>;
+        return (
+          <div className="w-50">
+            <Post post={post}></Post>
+          </div>
+        );
       })}
     </div>
   );

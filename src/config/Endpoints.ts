@@ -5,3 +5,5 @@ export const SIGN_UP = "/auth/sign-up";
 export const CHECK_USERNAME_VALID = "/auth/username";
 export const USER_IMAGE = "/users/user/user-image";
 export const POSTS = "/posts";
+export const USER_POSTS = "/posts/user";
+export const USER = "/users/user";

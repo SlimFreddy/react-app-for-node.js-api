@@ -3,7 +3,7 @@ import { Navbar, Nav, Button, Form, Image, Dropdown } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import SignIn from "../../components/auth/SignIn";
 import SignUp from "../../components/auth/SignUp";
-import { GET_USER_IMAGE} from "../../config/Endpoints";
+import { GET_USER_IMAGE } from "../../config/Endpoints";
 import { IRoute } from "../../models/IRoute";
 import LocalStorageService from "../../services/LocalStorageService";
 import style from "./NavBar.module.scss";
@@ -105,7 +105,7 @@ const NavBar: FC<Props> = ({
         <Navbar.Brand>API</Navbar.Brand>
         <Nav>
           {routes.map((route) => {
-            if (route.name === "User Settings") {
+            if (route.showInNav === false) {
               return null;
             }
             return (
