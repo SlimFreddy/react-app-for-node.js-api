@@ -30,10 +30,10 @@ const NavBar: FC<Props> = ({
           <Dropdown className={style.button} drop="left">
             <Dropdown.Toggle id="dropdown-basic">
               <Image
-                className={style.userImage}
-                src={`${GET_USER_IMAGE + "/" + actualUser.userId}`}
-                alt=""
-              ></Image>
+    className={style.userImage}
+    src={`${GET_USER_IMAGE + "/" + actualUser.userId}`}
+    alt=""
+    />
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item as={Link} to="/user-settings">
@@ -69,12 +69,12 @@ const NavBar: FC<Props> = ({
             Sign In
           </Button>
           <SignIn
-            saveSignInUser={saveSignInUser}
-            show={showSignIn}
-            callback={() => {
-              setShowSignIn(false);
-            }}
-          ></SignIn>
+    saveSignInUser={saveSignInUser}
+    show={showSignIn}
+    callback={() => {
+        setShowSignIn(false);
+    }}
+    />
           <Button
             variant="success"
             className="mx-2"
@@ -85,11 +85,11 @@ const NavBar: FC<Props> = ({
             Sign Up
           </Button>
           <SignUp
-            show={showSignUp}
-            callback={() => {
-              setShowSignUp(false);
-            }}
-          ></SignUp>
+    show={showSignUp}
+    callback={() => {
+        setShowSignUp(false);
+    }}
+    />
         </Form>
       );
     }
@@ -105,7 +105,7 @@ const NavBar: FC<Props> = ({
         <Navbar.Brand>API</Navbar.Brand>
         <Nav>
           {routes.map((route) => {
-            if (route.showInNav === false) {
+            if (!route.showInNav) {
               return null;
             }
             return (
